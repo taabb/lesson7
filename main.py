@@ -6,12 +6,6 @@ pygame.init()
 W, H = 800, 600
 display = pygame.display.set_mode( (W, H) )
 
-# image = pygame.image.load("res/crosshair_small.png")
-# rect = image.get_rect()
-
-image2 = pygame.image.load("res/target_small.png")
-rect2 = image2.get_rect()
-
 
 class Crosshair:
     def __init__(self):
@@ -27,7 +21,26 @@ class Crosshair:
         display.blit(self.image, self.rect)
 
 
+class Target:
+    def __init__(self):
+        self.image = pygame.image.load("res/target_small.png")
+        self.rect = self.image.get_rect()
 
+    def move(self):
+        if is_key_pressed(pygame.K_d):
+            self.rect.x += 10
+
+        if is_key_pressed(pygame.K_a):
+            self.rect.x -= 10
+
+        if is_key_pressed(pygame.K_w):
+            self.rect.y -= 10
+
+        if is_key_pressed(pygame.K_s):
+            self.rect.y += 10
+
+    def draw(self):
+        display.blit(self.image, self.rect)
 
 
 def is_key_pressed(key):
@@ -39,6 +52,7 @@ def where_mouse_pressed(mouse_key):
 
 
 crosshair = Crosshair()
+target = Target()
 
 
 def main():
@@ -49,28 +63,12 @@ def main():
                 return
 
         # 2 Обновление игровых объектов
-        if is_key_pressed(pygame.K_d):
-            rect2.x += 10
-            print(rect2.right)
-
-        if is_key_pressed(pygame.K_a):
-            rect2.x -= 10
-
-        if is_key_pressed(pygame.K_w):
-            rect2.y -= 10
-
-        if is_key_pressed(pygame.K_s):
-            rect2.y += 10
-
+        target.move()
         crosshair.move()
-        # mouse_pos = where_mouse_pressed(0)
-        # if mouse_pos:
-        #     rect.center = mouse_pos
 
         # 3 Отрисовка обновленного состояния
         display.fill("white")
-        display.blit(image2, rect2)
-        # display.blit(image, rect)
+        target.draw()
         crosshair.draw()
         pygame.display.update()
         pygame.time.delay(50)
